@@ -1,0 +1,87 @@
+	drbatt		Range with battery power share [km]
+	dtbatt		Endurance with battery power share [s]
+	
+	EQ_W_Wing	Wing weight equation designator (0 for empirical, 1 for skin-panel bending)
+	
+	
+	Foil0		Root airfoil name (4 digit or .dat name)
+	Foil1		Tip airfoil name (4 digit or .dat name)
+	FOS			Factor of Safety
+	Fuse_d		Fuselage depth/average diameter [m]
+	Fuse_L		Fuselage length [m]
+	Fuse_Lt		Fuselage-Empennage Length [m]
+	Fuse_Sw		Fuselage wetted area [m^2]
+	
+	
+	g			Local gravitational acceleration [m/s^2]
+	
+	
+	Ht_S		Horizontal stabilizer area [m^2]
+	
+	lb			Tail boom length/Wingspan
+	
+	NACA0		True if root airfoil 4 digit NACA
+	NACA1		True if tip airfoil 4 digit NACA
+	Nz			Ultimate load factor (in local grav.)	
+	
+	
+	P			Required Power [kW]
+	Panels		# Panels on wing
+	Pfrac		Power fraction supplied by battery
+	Pm			Max motor power [kW]
+	PropBlade	# of blades per propeller
+	PropD		Propeller diameter [m]
+	PropN		# of propellers
+	
+	
+	q			Dynamic pressure [psf]
+	
+	
+	rho_b		Density of material under bending load
+	rho_s		Density of material under shear load
+	RTGfuelfrac	Molar fraction of U232 in RTG fuel
+	RTGfueltype	RTG type (0 for MMRTG and 1 for SRG)
+	
+	
+	struc_st	Load positions along semispan
+	struc_F		Shear forces along semispan [lb]
+	struc_M		Bending moments along semispan [lb*ft]
+	
+	
+	Tmax		Maximum expected ambient Temperature [K]
+	Tmin		Minimum expected ambient Temperature [K]
+	tref		Reference time for power output for RTG sizing
+	Type		Type of aircraft
+			- Wing - Flying Wing
+	
+	
+	Ult_n		Ultimate normal stress for shear structure material [Pa]
+	Ult_s		Ultimate shear stress for shear structure material [Pa]
+	
+	
+	vm	Max 	rated motor voltage [V]
+	Vt_S		Vertical stabilizer area [m^2]
+	
+	
+	Wdg			Design Gross Mass [kg]
+	Wing_AR		Wing aspect ratio
+	Wing_b		Wing span [m]
+	Wing_c 		Wing chord [m]
+	Wing_cr		Wing root chord [m]
+	Wing_ct		Wing tip chord [m]
+	Wing_dhl	Wing dihedral angle ][deg]
+	Wing_r_tc	Wing root thickness-to-chord
+	Wing_r_cam	Wing root max camber
+	Wing_r_xc	Wing root airfoil max camber position
+	Wing_S		Wing planform area [m^2]
+	Wing_Sw		Wing wetted area [m^2]
+	Wing_SWP	Wing Sweep [deg]
+	Wing_t_tc	Wing tip thickness-to-chord
+	Wing_t_cam	Wing tip max camber
+	Wing_t_xc	Wing tip airfoil material camber position
+	Wing_TC	Wing thickness-to-chord ratio
+	Wing_TR	Wing taper ratio
+	Wing_fin_S	Winglet area
+	Wing_fin_AR	Winglet Aspect Ratio
+	Wing_fin_tr	Winglet Taper Ratio
+	

@@ -1,0 +1,8 @@
+Requirement,Value
+Max_Altitude (m),30000
+Min_Altitude (m),0
+Cruise_Speed_Max_Alt (m/s),25
+Cruise_Speed_Min_Alt (m/s),20
+Rate_of_Climb_Max_Alt (m/s),0.3
+Rate_of_Climb_Min_Alt (m/s),0.5
+Rate_of_Acc (m/s^2),0.05

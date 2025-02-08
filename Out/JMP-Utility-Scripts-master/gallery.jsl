@@ -1,0 +1,28 @@
+//!
+Clear Log();
+Try( MAIN_WINDOW << Close Window() );
+Close All( Data tables );
+Clear Globals();
+Delete Symbols();
+//
+//
+APP_VARS = Associative Array();  // Use this for "global" variables
+APP_VARS["app path"] = Get Default Directory();
+APP_VARS["data path"] = APP_VARS["app path"] || "data/";
+//
+//
+Include( APP_VARS["app path"] || "TOPSIS/window.jsl" );
+//
+//
+Create Gallery Window = Function( {},
+	{win}, 
+    //
+	win = New Window( "Gallery of Useful JMP Windows",
+		Show Menu( 0 ),  // enable only for debugging
+		Show Toolbars( 0 ),  // enable only for debugging
+		V List Box( Button Box( "TOPSIS", Create Topsis Window ) )
+	)
+);
+
+
+Create Gallery Window();

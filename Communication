@@ -1,0 +1,96 @@
+% S/W MATLAB
+%Most calculations done in dB.
+% tho I wrote this code for Mars's mission, the equations used are the same
+% one for all other planets, the only change is the design geometry(of dish and such )and atm
+% condition(s)
+%%%%%!! This is big : we have to have an orbiter, there is just no way that data can be transmitted straight from the airplane to planet of Earth. 
+% We need some source of relay. 
+%I suggest we use an orbiter around the Titan and one around Jupiter, even if it is not part of our mission structure we still have to at least mention in the slides
+% how our data is going to be transmitted to Earth!!!
+
+%% Constants
+Bandwith=50e6; % in Hz
+K=1.38065e-23; % Boltzman constant in J/K
+
+%%  Determining Noise Temperature for the system
+%These are under the assumption of a 2Gz Reciever
+Tant=30-2-17; %Unit is in dB, this is a free variable to change in the future (The number used here is assuming worst conditions, such as heavy rain/Human Noise and Solar Noise)
+Tref=10*log10(290); % Unit is in dB This is usualy set as 290K and should only be changed under nonideal circumstances.
+LrDownlink= 0.5; % This is in dB and it is given through Wertz's Space Mission Technology book. The Uplink is the same value
+F=1+(1.0/Tref); % In dB. This should not be changed
+SystemNoiseTemp=Tant+((Tref*(1-LrDownlink)/LrDownlink))+((Tref*(F-1)/LrDownlink)); % The uplink and downlink System Noise Temperature in dB.
+
+%% Determining Grec
+% The X band is the best option due to it being compatable with all DSN
+% stations.
+%Downlink (Assuming communication with DSN) All units in dB^2
+
+Grec70X=74.4;
+Grec34X=68.0;
+
+AssumedGrecDown=Grec70X;
+
+%% Noise (The denominator of our main equation)
+
+SNTinK=10^(SystemNoiseTemp/10); %Convert Ts from dB to K
+Noise=K*SNTinK*Bandwith;
+Noise=10*log10(Noise);
+
+%% Power Values
+
+PowIn=(65e3*0.18);%in W. This number is somewhat free as long as it does not exceed 65e3*0.18 (11700 W is our max power)
+PowIn=10*log10(PowIn);
+PowEff=0.25;
+
+%% Determining Gtrans (the antenna gain)
+
+EffVal=0.55; % The efficiency value that is used in the calcualtion of the Antenae efficiency, this should be consistant
+FreqLambda=8434.012345e6; % Channel 28 of the DSN X Downlink
+DishDiameter=1; %Meter
+% AEff=EffVal*((pi*DishDiameter^2)/4);
+% GainTrans=(4*pi*AEff)/FreqLambda^2; % This is the ideal gain of the parabolic dish (dBi)
+% BeamWidth=(70*FreqLambda)/DishDiameter; % This is the ideal Beamwidth of the antenna (degrees)
+
+PeakGParab=(20*log10(FreqLambda*10^-9))+(20*log10(DishDiameter))+17.8; % This is the gain of the parabola/dish antenna (dBi)
+BWAtPeak=(65.3*FreqLambda)/DishDiameter; % The beam width at peak gain
+PeakGDip=(1.64); %This is the omnidirectional antenna gain (dBi); this is given
+
+%% Losses (Calculated under worst cases)
+
+LossAtm=1.15; %dB This is given
+AttenuationME=273+17; % dB Mars to Earth
+AttenuationMOE=273+17+1; % dB Mars to Orbiter to Earth
+LossAtm=AttenuationMOE+LossAtm;
+
+MaxMarsDistance=401e6; % This is the farthes Mars and Earth Get in Km
+SpaceLoss=(FreqLambda/(4*pi*MaxMarsDistance*10^3)); %in dB
+
+PointError= 0.7; % This is usualy less than 1 dB.
+
+%% Our Equation:
+CarSt70=PowIn*PowEff*PeakGParab*-SpaceLoss*-LossAtm*-PointError*Grec70X;
+CarSt34=PowIn*PowEff*PeakGParab*-SpaceLoss*-LossAtm*-PointError*Grec34X;
+
+Eq70=CarSt70/Noise;
+Eq34=CarSt34/Noise;
+
+OurUDataRate70=Bandwith*log2(Eq70)*1e-6;
+OurUDataRate34=Bandwith*log2(Eq34)*1e-6;
+%% Our Equation Design!:
+LinkMargin=5; % Given in dB
+ImpLoss=3; % Given in dB 
+Eq70D=LinkMargin+ImpLoss+10.5;
+UDataRate=Bandwith*log2(Eq70D)*1e-6;
+
+%% E2M data
+RCarSt34=109.5*-SpaceLoss*-LossAtm*-PointError*20;
+RCarSt70=115.8*-SpaceLoss*-LossAtm*-PointError*20;
+
+REq70=RCarSt70/Noise;
+REq34=RCarSt34/Noise; % Not the best choice in Names
+
+DOurUDataRate70=Bandwith*log2(REq70)*1e-6;
+DOurUDataRate34=Bandwith*log2(REq34)*1e-6;
+
+%% Efficiency
+EffParab=PeakGParab-(10*log10(61.3));

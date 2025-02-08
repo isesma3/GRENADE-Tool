@@ -1,0 +1,3 @@
+﻿Segment,Type,Vel_min,Vel_max,Alt_i,Alt_f,Climb,Accel,TurnRadius
+1,Cruise,13.16,13.16,500,500,,,
+2,Climb,13.16,13.16,500,32000,0.001996198,,

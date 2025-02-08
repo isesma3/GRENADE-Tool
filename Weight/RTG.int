@@ -1,0 +1,9 @@
+rhoU, 264.03515, //U232-dioxide g/mol
+rhoPu, 270.04756, //Pu238-dioxide g/mol
+P2W_Pu_RTG, 4.051348
+P2W_Pu_SRG, 4.723248
+MF_Pu_RTG, 0.117385
+MF_Pu_SRG, 0.065551
+Eff_RTG, 0.0645
+Eff_SRG, 0.128
+

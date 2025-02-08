@@ -1,0 +1,81 @@
+Include( APP_VARS["app path"] || "topsis/" || "topsis_functions.jsl" );
+
+
+APP_VARS["topsis"] = Associative Array();
+
+
+Create TOPSIS Controls = Function(
+    {},
+    {
+        topsis_attributes, empty_strings_for_radio_selections, attr_i, controls,
+        sliders_colbox, values_colbox, norms_colbox, goals_colbox
+    },  // Locals
+    topsis_attributes = {};
+    empty_strings_for_radio_selections = {};
+    For(attr_i=1, attr_i<=N Items(APP_VARS["topsis"]["topsis data"]["Attributes"]), attr_i++,
+        Insert Into(topsis_attributes, APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Name"]);
+        Insert Into(empty_strings_for_radio_selections, "")
+    );
+    //
+    controls = Table Box(
+        Col Span Box( "X", APP_VARS["topsis"]["topsis data"]["graph_x"] = Radio Box( empty_strings_for_radio_selections, Update TOPSIS Graph() ) ),
+        Col Span Box( "Y", APP_VARS["topsis"]["topsis data"]["graph_y"] = Radio Box( empty_strings_for_radio_selections, Update TOPSIS Graph(), << Set(2) ) ),
+        String Col Box( "Attributes", topsis_attributes ),
+        sliders_colbox = Col Box( "Sliders" ),
+        values_colbox = Col Box( "Values" ),
+        norms_colbox = Col Box( "Weights" ),
+        goals_colbox = Col Box( "Goal" ),
+        << Set Column Group Borders( 0 )
+    );
+    //
+    For( attr_i=1, attr_i<=N Items( APP_VARS["topsis"]["topsis data"]["Attributes"] ), attr_i++,
+        sliders_colbox << Append( APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Slider"] );
+        values_colbox << Append( APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Slider Value"] );
+        norms_colbox << Append( APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Weight"] );
+        goals_colbox << Append( APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Goal"] );
+    );
+    //
+    Return(controls)
+);
+
+
+Create Topsis Window = Function(
+    {},  // No inputs
+    {
+        attr_cols, extra_cols, feas_alt_dt, topsis_dt,
+        topsis_control_win, topsis_list_win
+    },  // Locals
+    attr_cols = {
+        "Mass",
+        "AtmPassDeltaH",
+        "GndAreaFrac",
+        "LD"
+    };  // Add a list of columns that are metrics that DMs care about
+    extra_cols = {
+    };
+    feas_alt_dt = Load Data Table("Filtered_Initial_Data");
+    topsis_dt = Prepare TOPSIS Table(feas_alt_dt, attr_cols, extra_cols);
+    APP_VARS["topsis"]["topsis data"] = Create TOPSIS Data Structure(attr_cols);
+    APP_VARS["topsis"]["topsis data"]["Scatter Plot Container"] = H List Box();
+    Update TOPSIS Preferences();
+    //
+    topsis_control_win = New Window(
+        "TOPSIS Decision Support",
+        Show Menu(0),  // enable only for debugging
+        Show Toolbars(0),  // enable only for debugging
+        H List Box(
+            Create TOPSIS Controls(),
+            Spacer Box( Size( 10, 0 ) ),
+            APP_VARS["topsis"]["topsis data"]["Scatter Plot Container"]
+        )
+    );
+    topsis_list_win = New Window(
+        "TOPSIS Ordered List",
+        Show Menu(0),  // enable only for debugging
+        Show Toolbars(0),  // enable only for debugging
+        Create Ordered TOPSIS List()
+    );
+    Update TOPSIS();
+    //
+    Return()
+);

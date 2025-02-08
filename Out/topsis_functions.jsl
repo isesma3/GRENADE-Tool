@@ -1,0 +1,276 @@
+Load Data Table = Function(
+    {dt_name},  // Inputs
+    {dt},  // Locals
+    If( Contains( ( Get Data Table List() << Get Name ), dt_name ),
+        dt = Data Table(dt_name),
+        // else:
+        dt = Open( APP_VARS["data path"] || dt_name || ".jmp", Invisible );
+        dt << Set Name( dt_name )
+    );
+    Return(dt)
+);
+
+
+Prepare TOPSIS Table = Function(
+    {feas_alt_dt, attr_cols, extra_cols={}},
+    {feas_alt_dt, attr_cols, extra_cols, keep_cols, topsis_dt},
+    //
+    keep_cols = attr_cols || extra_cols;
+    feas_alt_dt << Clear Select();  // clears selected rows
+    feas_alt_dt << Select Columns(keep_cols);
+    topsis_dt = feas_alt_dt << Subset(
+        Invisible,
+        Selected Columns,
+        Copy Formula(0),
+        Link to Original Data Table(0)
+    );
+    feas_alt_dt << Clear Column Selection();
+    topsis_dt << Set Name("TOPSIS Data Table");
+    topsis_dt << New Column( "Similarity", Numeric, "Continuous" );
+    //
+    topsis_dt << Group Columns( "Attributes", attr_cols );
+    If(extra_cols!={},
+        topsis_dt << Group Columns( "Extra Variables", extra_cols );
+    );
+    //
+    Return(topsis_dt)
+);
+
+
+Create Ordered TOPSIS List = Function(
+    {},  // No inputs
+    {topsis_cols, col_i},  // Locals
+    //
+    topsis_cols = Data Table("TOPSIS Data Table") << Get Column Names();
+    //
+    APP_VARS["topsis"]["topsis data"]["Ordered Table"] = Table Box(<< Set Scrollable( 20, 0 ) );
+    For( col_i=1, col_i<=N Items(topsis_cols), col_i++,
+        APP_VARS["topsis"]["topsis data"]["Ordered Table"] << Append(
+            Data Table Col Box(
+                Column( Data Table("TOPSIS Data Table"), topsis_cols[col_i] )
+            )
+        )
+    );
+    //
+    Return(APP_VARS["topsis"]["topsis data"]["Ordered Table"])
+);
+
+
+Create TOPSIS Graph = Function(
+    {},  // No inputs
+    {
+        x_attr_i, y_attr_i, x_var, y_var,
+        x_best, y_best,
+        x_pos_ideal, x_neg_ideal, y_pos_ideal, y_neg_ideal,
+        x_min, x_max, y_min, y_max
+    },  // Locals
+    //
+    x_attr_i = APP_VARS["topsis"]["topsis data"]["graph_x"] << Get();
+    y_attr_i = APP_VARS["topsis"]["topsis data"]["graph_y"] << Get();
+    x_var = APP_VARS["topsis"]["topsis data"]["Attributes"][x_attr_i]["Name"];
+    y_var = APP_VARS["topsis"]["topsis data"]["Attributes"][y_attr_i]["Name"];
+    //
+    x_best = Column(Data Table("TOPSIS Data Table"), x_var)[1];
+    y_best = Column(Data Table("TOPSIS Data Table"), y_var)[1];
+    //
+    x_pos_ideal = APP_VARS["topsis"]["topsis data"]["Attributes"][x_attr_i]["Positive Ideal"];
+    x_neg_ideal = APP_VARS["topsis"]["topsis data"]["Attributes"][x_attr_i]["Negative Ideal"];
+    y_pos_ideal = APP_VARS["topsis"]["topsis data"]["Attributes"][y_attr_i]["Positive Ideal"];
+    y_neg_ideal = APP_VARS["topsis"]["topsis data"]["Attributes"][y_attr_i]["Negative Ideal"];
+    //
+    x_min = Col Minimum( Column(Data Table("TOPSIS Data Table"), x_var) );
+    x_max = Col Maximum( Column(Data Table("TOPSIS Data Table"), x_var) );
+    y_min = Col Minimum( Column(Data Table("TOPSIS Data Table"), y_var) );
+    y_max = Col Maximum( Column(Data Table("TOPSIS Data Table"), y_var) );
+    //
+    Eval(
+        Parse(
+            Eval Insert(
+                "APP_VARS[\!"topsis\!"][\!"topsis data\!"][\!"Scatter Plot\!"] = Data Table(\!"TOPSIS Data Table\!") << Graph Builder(
+                    Size( 600, 600 ),
+                    Show Control Panel( 0 ),
+                    Show Legend( 0 ),
+                    Show Title( 1 ),
+                    Variables(
+                        X( :Name( \!"^x_var^\!" ) ),
+                        Y( :Name( \!"^y_var^\!" ) )
+                    ),
+                    Elements( Points( X, Y ) ),
+                    SendToReport(
+                        Dispatch(
+                            {},
+                            \!"Graph Builder\!",
+                            OutlineBox,
+                            {Set Title( \!"\!" )}
+                        ),
+                        Dispatch(
+                            {},
+                            \!"Graph Title\!",
+                            TextEditBox,
+                            {Set Text( \!"Positive Ideal, Negative Ideal, and Best Compromise\!" )}
+                        ),
+                        Dispatch(
+                            {},
+                            x_var,
+                            ScaleBox,
+                            {Add Ref Line( x_neg_ideal, \!"Solid\!", \!"Red\!", \!"Neg. Ideal\!", 3, 0.25 )}
+                        ),
+                        Dispatch(
+                            {},
+                            x_var,
+                            ScaleBox,
+                            {Add Ref Line( x_pos_ideal, \!"Solid\!", \!"Green\!", \!"Pos. Ideal\!", 3, 0.25 )}
+                        ),
+                        Dispatch(
+                            {},
+                            y_var,
+                            ScaleBox,
+                            {Add Ref Line( y_neg_ideal, \!"Solid\!", \!"Red\!", \!"Neg. Ideal\!", 3, 0.25 )}
+                        ),
+                        Dispatch(
+                            {},
+                            y_var,
+                            ScaleBox,
+                            {Add Ref Line( y_pos_ideal, \!"Solid\!", \!"Green\!", \!"Pos. Ideal\!", 3, 0.25 )}
+                        ),
+                        Dispatch(
+                            {},
+                            x_var,
+                            ScaleBox,
+                            {Add Ref Line( x_best, \!"Solid\!", \!"Blue\!", \!"Best\!", 3, 0.25 )}
+                        ),
+                        Dispatch(
+                            {},
+                            y_var,
+                            ScaleBox,
+                            {Add Ref Line( y_best, \!"Solid\!", \!"Blue\!", \!"Best\!", 3, 0.25 )}
+                        )
+                    )
+                )"
+            )
+        )
+    );
+    //
+    Return(APP_VARS["topsis"]["topsis data"]["Scatter Plot"])
+);
+
+
+Update TOPSIS Graph = Function(
+    {},  // No inputs
+    {},  // Locals
+    //
+    Try(APP_VARS["topsis"]["topsis data"]["Scatter Plot"] << Delete);
+    APP_VARS["topsis"]["topsis data"]["Scatter Plot Container"] << Append(
+        Create TOPSIS Graph()
+    );
+    Return()  // Return nothing
+);
+
+
+Update TOPSIS = Function(
+    {},  // No inputs
+    {
+        names, weights, goals, num_alternatives,
+        sq_dist_to_pos_ideal, sq_dist_to_neg_ideal,
+        attr_i, name, weight, goal, col_values,
+        norm_col_values, col_norm_factor, weighted_norm_col_values,
+        pos_ideal, neg_ideal,
+        sq_col_dist_to_pos_ideal, sq_col_dist_to_neg_ideal,
+        dist_to_pos_ideal, dist_to_neg_ideal, dist_sum, similarity_values
+    },  // Locals
+    //
+    names = {};
+    weights = {};
+    goals = {};
+    num_alternatives = N Rows( Data Table("TOPSIS Data Table") );
+    sq_dist_to_pos_ideal = J( num_alternatives, 1, 0);
+    sq_dist_to_neg_ideal = J( num_alternatives, 1, 0);
+    For( attr_i = 1, attr_i <= N Items( APP_VARS["topsis"]["topsis data"]["Attributes"] ), attr_i++,
+        name = APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Name"];
+        weight = Num( APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Weight"] << Get Text() );
+        goal = APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Goal"] << Get Selected();
+        //
+        col_values = Column( Data Table("TOPSIS Data Table"), name ) << Get Values();
+        col_norm_factor = Sqrt( Sum( Power( col_values, 2 ) ) );
+        norm_col_values = col_values / col_norm_factor;
+        weighted_norm_col_values = weight * norm_col_values;
+        If( goal == "Maximize",
+            pos_ideal = Max(weighted_norm_col_values);
+            neg_ideal = Min(weighted_norm_col_values),
+            pos_ideal = Min(weighted_norm_col_values);
+            neg_ideal = Max(weighted_norm_col_values)
+        );
+        APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Positive Ideal"] = col_norm_factor * pos_ideal / weight;
+        APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Negative Ideal"] = col_norm_factor * neg_ideal / weight;
+        sq_col_dist_to_pos_ideal = Power( weighted_norm_col_values - pos_ideal, 2 );
+        sq_col_dist_to_neg_ideal = Power( weighted_norm_col_values - neg_ideal, 2 );
+        sq_dist_to_pos_ideal = sq_dist_to_pos_ideal + sq_col_dist_to_pos_ideal;
+        sq_dist_to_neg_ideal = sq_dist_to_neg_ideal + sq_col_dist_to_neg_ideal;
+    );
+    dist_to_pos_ideal = Sqrt( sq_dist_to_pos_ideal );
+    dist_to_neg_ideal = Sqrt( sq_dist_to_neg_ideal );
+    dist_sum = dist_to_neg_ideal + dist_to_pos_ideal;
+    //
+    similarity_values = EDiv( dist_to_neg_ideal, dist_sum );
+    Column( Data Table("TOPSIS Data Table"), "Similarity" ) << Set Values( similarity_values );
+    Try( APP_VARS["topsis"]["topsis data"]["Scatter Plot"] << Delete );
+    Data Table("TOPSIS Data Table") << Sort( Replace Table, By( :Similarity ), Order( Descending ) );
+    Try(Update TOPSIS Graph());
+    //
+    Return()  // Return nothing
+);
+
+
+Update TOPSIS Preferences = Function(
+    {},  // No inputs
+    {value_sum, slider_val, weight, attr_i},  // Locals
+    //
+    value_sum = 0;
+    For( attr_i = 1, attr_i <= N Items( APP_VARS["topsis"]["topsis data"]["Attributes"] ), attr_i++,
+        value_sum = value_sum + ( APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Slider"] << Get() );
+    );
+    For( attr_i = 1, attr_i <= N Items( APP_VARS["topsis"]["topsis data"]["Attributes"] ), attr_i++,
+        slider_val = APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Slider"] << Get();
+        weight = ( APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Slider"] << Get() ) / value_sum;
+        APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Slider Value"] << Set Text( Char( slider_val, 12, 12 ) );
+        APP_VARS["topsis"]["topsis data"]["Attributes"][attr_i]["Weight"] << Set Text( Char( weight, 12, 12 ) )
+    );
+    Update TOPSIS();
+    //
+    Return()  // Return nothing
+);
+
+
+Create TOPSIS Data Structure = Function(
+    {attributes_list},  // List of attributes
+    {attributes_list, topsis, attr_i, attr_array},  // Locals
+    //
+    topsis = Associative Array();
+    topsis["Attributes"] = {};
+    For( attr_i=1, attr_i<=N Items(attributes_list), attr_i++,
+        attr_array = Eval(
+            Eval Expr(
+                Associative Array(
+                    {
+                        { "Name", Expr( attributes_list[attr_i] ) },
+                        { "Slider", Expr( Slider Box( 0, 1, 0, Update TOPSIS Preferences() ) ) },
+                        { "Slider Value", Expr( Text Box( Char( 0, 12, 2 ) ) ) },
+                        { "Weight", Expr( Text Box( Char( 0, 12, 2 ) ) ) },
+                        { "Goal", Expr( Combo Box( {"Minimize", "Maximize"}, Update TOPSIS Preferences() ) ) }
+                    }
+                )
+            )
+        );
+        If( attributes_list[attr_i] == "Mission 1 Radius", attr_array["Goal"] << Set(2) );
+        Insert Into(topsis["Attributes"], attr_array);
+    );
+    // Initialize things:
+    topsis["Attributes"][1]["Slider"] << Set(0.5);
+    topsis["Attributes"][1]["Slider Value"] << Set Text( Char( 0.5, 12, 2 ) );
+    topsis["Attributes"][1]["Weight"] << Set Text( Char( 0.5, 12, 2 ) );
+    topsis["Attributes"][2]["Slider"] << Set(0.5);
+    topsis["Attributes"][2]["Slider Value"] << Set Text( Char( 0.5, 12, 2 ) );
+    topsis["Attributes"][2]["Weight"] << Set Text( Char( 0.5, 12, 2 ) );
+    //
+    Return(topsis)
+);

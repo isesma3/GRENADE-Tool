@@ -1,0 +1,30 @@
+﻿Aeroshell Name,Diameter (m),Launch Vehicle,Payload Mass (kg),Cost ($ billion),Source
+Mars Science Laboratory (MSL) Heat Shield,4.5,Atlas V-541,900,2.5,NASA
+Mars 2020 Perseverance Heat Shield,4.5,Atlas V-541,1025,2.7,NASA
+Orion Heat Shield,5,Space Launch System (SLS),20000,4.1,NASA
+Galileo Probe Heat Shield,4.6,Space Shuttle Atlantis,339,1.4,NASA
+Viking 1 & 2 Aeroshells,3.54,Titan IIIE,572,1,NASA
+Huygens Probe Heat Shield,2.7,Titan IVB/Centaur,320,3.26,ESA/NASA
+Stardust Sample Return Capsule,1,Delta II,300,0.199,NASA
+Beagle 2 Aeroshell,0.7,Mars Express (Soyuz),33.2,0.05,ESA
+Curiosity Rover Heat Shield,4.5,Atlas V-541,899,2.5,NASA
+InSight Lander Heat Shield,2.4,Atlas V-401,360,0.83,NASA
+New Horizons Aeroshell,2.5,Atlas V-551,478,0.7,NASA
+Phoenix Mars Lander Heat Shield,2.7,Delta II 7925,350,0.386,NASA
+Mars Pathfinder Heat Shield,2.65,Delta II 7925,264,0.28,NASA
+Spirit and Opportunity Rovers Heat Shield,2.65,Delta II 7925,185,0.8,NASA
+Juno Spacecraft Aeroshell,3.5,Atlas V-551,3625,1.13,NASA
+Parker Solar Probe Heat Shield,2.3,Delta IV Heavy,685,1.5,NASA
+Dragon Capsule Heat Shield,3.7,Falcon 9,6000,Varies,SpaceX
+Cygnus Capsule Heat Shield,3,Antares,2000,Varies,Northrop Grumman
+Soyuz Capsule Heat Shield,2.7,Soyuz rocket,7080,Varies,Roscosmos
+Apollo Command Module Heat Shield,3.9,Saturn V,26000,6.4,NASA
+Shenzhou Capsule Heat Shield,2.8,Long March 2F,7840,Varies,CNSA
+Mercury Capsule Heat Shield,1.9,Atlas LV-3B,1350,1.73,NASA
+Gemini Capsule Heat Shield,3.3,Titan II GLV,3854,1.3,NASA
+HTV Heat Shield,4.4,H-IIB,6000,Varies,JAXA
+ATV Heat Shield,4.5,Ariane 5,7500,Varies,ESA
+Osiris-Rex Sample Return Capsule,1,Atlas V,2110,0.8,NASA
+Hayabusa2 Sample Return Capsule,0.4,H-IIA,609,0.15,JAXA
+Chang'e 5 Return Capsule,1,Long March 5,8200,Varies,CNSA
+BepiColombo Mercury Transfer Module,2.4,Ariane 5,4100,2,ESA/JAXA
