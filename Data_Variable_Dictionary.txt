@@ -69,7 +69,7 @@
 	Wing_c 		Wing chord [m]
 	Wing_cr		Wing root chord [m]
 	Wing_ct		Wing tip chord [m]
-	Wing_dhl	Wing dihedral angle ][deg]
+	Wing_dhl	Wing dihedral angle [deg]
 	Wing_r_tc	Wing root thickness-to-chord
 	Wing_r_cam	Wing root max camber
 	Wing_r_xc	Wing root airfoil max camber position

@@ -10,7 +10,7 @@ from math import pi as PI
 
 sys.path.insert(0, ROOT_DIR + "/Environment")
 sys.path.insert(0, ROOT_DIR + "/Aero/Airfoils")
-from Environment.TitanAtm import *
+from Environment.MarsAtm import *
 
 # Given parameters for the BWB
 total_span = 2.8125 / 2  # meters, total wingspan halved for symmetry

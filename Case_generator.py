@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from math import pi as PI
-from Environment.TitanAtm import *
+from Environment.MarsAtm import *
 from Velocity_Area_Calc import *
 from Config_generation import *
 

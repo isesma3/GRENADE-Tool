@@ -189,11 +189,13 @@ for loop in range(CASE_START - 1, loop_end):
     cruise_v = CASE.Cruise_V[0]
     v = CASE.v[0] if "v" in CASE.columns else cruise_v
     if custom == 1:
+        #! This is a function of sensors, need to check
         v = calculate_required_velocity(CASE.Sensor_swath_width[0],CASE.Area_coverage[0],CASE.tmission[0])
         CASE.loc[0, 'Cruise_V'] = v
     # if v < 12.0:
     #     v = 12.0
     #     CASE.loc[0, 'Cruise_V'] = v
+        #! This needs to be changed by me an Louis
     if CASE.Season[0] == 'summer': # Can choose just one season b/c Titan seasons last several earth years and mission time is usually alwasy <= earth 1 yr
         v_wind = Wind_Summer(0, (ATM_Table(cruise_alt, planet)[1]/100)) # Currently only have wind data for Titan
     if CASE.Season[0]== 'fall':
@@ -304,7 +306,8 @@ for loop in range(CASE_START - 1, loop_end):
         print('Tail type:',DOE.Tail_type[loop])
         print('Wing Aspect Ratio: {:.2f}'.format(AR))
         print('Wingspan: {:.2f} m'.format(b))
-        print('Flying in the Titanian',CASE.Season[0])
+        print('Flying in the Martian',CASE.Season[0])
+        #! This will change
         print('Number of propulsors: {:.2f}'.format(CASE.PropulsionN[0]))
         D_shell = CASE.D_shell[0]
         print('Aeroshell Diameter Constraint: {:.2f} m'.format(D_shell))
@@ -326,6 +329,7 @@ for loop in range(CASE_START - 1, loop_end):
             CASE.at[0, "EQ_W_Wing"] = 0
         else:
             CASE.at[0, "EQ_W_Wing"] = DOE.iloc[loop].EQ_W_Wing
+        #! This here also
         CASE.at[0, "PropD"] = calculate_propeller_diameter(CASE)
         m, fuse_dim, cg_set, Pinfo, Check = Weights(CASE, struc, Num_Folds, fold_loc)
         print('Fuselage length: {:.2f} m'.format(fuse_dim['Fuse_L']))
@@ -454,6 +458,7 @@ for loop in range(CASE_START - 1, loop_end):
         
         # Structures
         # Calculate the limit load factor due to gusts
+        #! This should take care of itself once the wind model is upadted
         rho_sl = ATM_Table(0, atm_table)[0]
         U = continuous_gust_model(v, abs(v_wind), CASE.tmission[0],planet,cruise_alt)# Finds gust as a percentage of the total wind speed (z-component of wind vector)
         n_gust = 1 + (1/(2*mtot*g0))*rho_sl*(v*np.sqrt(rho_cruise/rho_sl))*U*S*dp['CLa'][cl_index[0]]
@@ -504,7 +509,9 @@ for loop in range(CASE_START - 1, loop_end):
             CASE, m, cg_set, Static_M, npt
         )  # Need updated netural point position and replace value of 1 here
         CGx = cg_UPD.iloc[0]["Net"]
+
         # Testing Convergence
+        #! This tests every output variable to achieve convergence on all of them
         print(f"Total Mass [kg]: {mtot}")
         # print(f"Syst. Power: {Ppay}")
         print(f"Preq: {Preq}, Pguess: {P0 * 1000}")
@@ -591,6 +598,7 @@ for loop in range(CASE_START - 1, loop_end):
     # PerfG = grnd_perf(v, PerfA, DIAMETER)
 
     ## Mission Performance
+    #!*Assigns values to the initialized outputs at the beggining
     Out_Case[j] = loop + 1
     Out_S[j] = S
     Out_b[j] = b
@@ -636,6 +644,7 @@ for loop in range(CASE_START - 1, loop_end):
     Out_aeroshell[j] = CASE.D_shell[0]
     j += 1
 
+    #* Put all in a data frame to use in VSP
     dF = pd.DataFrame(
         data={
             "Case": Out_Case[0:, 0],
@@ -765,6 +774,7 @@ if selected_aeroshell:
 else:
     print("No suitable aeroshell found for the given criteria.")
 
+#* Geometry generation
 # Generate a .vsp3 file for the chosen case
 print('Generating VSP file...')
 if (TdF.Fuse_L[0] > 0.4*TdF.Span[0]):
