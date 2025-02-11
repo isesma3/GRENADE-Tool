@@ -2,16 +2,16 @@
 # File Name: TitanAtm.py                                 
 # Creat Date: December 21, 2022                        
 # Contributors (In-Order): Daniel J. Moore, Tyler V. Obero, Alexandre Masset                        
-# Last Edited: June 23, 2024                    
-# Last Edited By: Tyler V. Obero                                
+# Last Edited: 10 Feb 2025                    
+# Last Edited By: Glorieux Louis                               
 # For: Aerospace Systems Design Lab @ Georgia Tech     
 # Description: Definition of Titan's Atmosphere based on Yelle Model and simulation & interpolation based wind estimates (profiles from Newman et.al. "Stratospheric Superrotation in the TitanWRF model")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Functions:                                          
-#   Titan_Const()
-#   TitanATM_Table()
+#   Mars_Const()
+#   MarsATM_Table()
 #   Wind_Estimate()
 #   Wind_Summer()
 #   Wind_Fall()
