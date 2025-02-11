@@ -33,7 +33,7 @@ from Propulsion.Prop_Power_V2 import *
 from Propulsion.PropellerDnP import *
 from Weight.TitanWeight import *
 from Weight.Structure import *
-from Environment.TitanAtm import *
+from Environment.MarsAtm import *
 from Aero.AnS import *
 from Aero.parasitic_drag_func import *
 from Payload.Power_Systems import *
@@ -59,6 +59,7 @@ planetConstants = Planet_Const(planet)
 g0 = planetConstants[0]
 DIAMETER = planetConstants[1]
 
+#! CHECK SOME OF THE INPUTS: SENSORWIDTH, TMISSION, ...
 # Define variables from Input.csv
 ncases = int(input.n_Cases[0])
 n_cases = np.linspace(1,ncases,ncases)
@@ -120,51 +121,52 @@ etap2 = 0.9
 
 #! CHECK IF SOME OF THESE NEED TO BE CHANGED/REMOVED
 # Output Arrays
-Out_S = np.zeros((Len1, Len2))
-Out_b = np.zeros((Len1, Len2))
-Out_P = np.zeros((Len1, Len2))
-Out_m = np.zeros((Len1, 16))
-Out_v = np.zeros((Len1, Len2))
-Out_CD = np.zeros((Len1, Len2))
-Out_CL = np.zeros((Len1, Len2))
-Out_AoA = np.zeros((Len1, Len2))
-Out_PropN = np.zeros((Len1, Len2))
-Out_PropD = np.zeros((Len1, Len2))
-Out_PropBlade = np.zeros((Len1, Len2))
-Out_Sweep = np.zeros((Len1, Len2))
-Out_root_C = np.zeros((Len1, Len2))
-Out_tip_C = np.zeros((Len1, Len2))
-Out_Wing_TR = np.zeros((Len1, Len2))
-Out_Wing_AR = np.zeros((Len1, Len2))
-Out_Wing_dhl = np.zeros((Len1, Len2))
-Out_twist = np.zeros((Len1, Len2))
-Out_fuse_L = np.zeros((Len1, Len2))
-Out_fuse_D = np.zeros((Len1,Len2))
-Out_fuse_x = np.zeros((Len1, Len2))
-Out_LD_ratio = np.zeros((Len1, Len2))
-Out_S_Vtail = np.zeros((Len1, Len2))
-Out_S_htail = np.zeros((Len1, Len2))
-Out_S_vtail = np.zeros((Len1, Len2))
-Out_SM = np.zeros((Len1, Len2))
-Out_cgx = np.zeros((Len1, Len2))
-Out_RTG_h = np.zeros((Len1, Len2))
-Out_nRTG = np.zeros((Len1, Len2))
-Out_Bat_h = np.zeros((Len1, Len2))
-Out_check = np.zeros((Len1, Len2), dtype=object)
-Out_tail_check = np.zeros((Len1, Len2), dtype=object)
-Out_lb = np.zeros((Len1, Len2))
-Out_Planet = np.zeros((Len1, Len2), dtype=object)
-Out_Limiting = np.array(np.zeros((Len1, Len2)), dtype=object)
-Out_Area_cov = np.zeros((Len1, Len2))
-Out_Case = np.zeros((Len1, Len2))
-Out_Tail_type = np.zeros((Len1, Len2), dtype=object)
-Out_Winglet = np.zeros((Len1, Len2), dtype=object)
-Out_Wing_fold = np.zeros((Len1, Len2), dtype=object)
-Out_Num_wing_fold = np.zeros((Len1, Len2))
-Out_Season = np.zeros((Len1, Len2), dtype=object)
-Out_mission_time = np.zeros((Len1, Len2))
-Out_swath_width = np.zeros((Len1, Len2))
-Out_aeroshell = np.zeros((Len1,Len2))
+#* I am guessing here the meaning of each xd -- Ismael 24/25
+Out_S = np.zeros((Len1, Len2))  # Surface
+Out_b = np.zeros((Len1, Len2))  # Wingspan
+Out_P = np.zeros((Len1, Len2))  # 
+Out_m = np.zeros((Len1, 16))    # Mass?
+Out_v = np.zeros((Len1, Len2))  # Speed (cruise?)
+Out_CD = np.zeros((Len1, Len2)) # CD
+Out_CL = np.zeros((Len1, Len2)) # CL
+Out_AoA = np.zeros((Len1, Len2))    # AoA
+Out_PropN = np.zeros((Len1, Len2))  #? Number of props
+Out_PropD = np.zeros((Len1, Len2))  #? Diameter of props
+Out_PropBlade = np.zeros((Len1, Len2))  # Something of the propeller blade
+Out_Sweep = np.zeros((Len1, Len2))  # Wing sweep
+Out_root_C = np.zeros((Len1, Len2)) # Root cord
+Out_tip_C = np.zeros((Len1, Len2))  # Tip cord
+Out_Wing_TR = np.zeros((Len1, Len2))    # Tapper ratio
+Out_Wing_AR = np.zeros((Len1, Len2))    # Aspect ratio
+Out_Wing_dhl = np.zeros((Len1, Len2))   # ?
+Out_twist = np.zeros((Len1, Len2))  # Wing twist
+Out_fuse_L = np.zeros((Len1, Len2)) # Fuselage length
+Out_fuse_D = np.zeros((Len1,Len2))  # Fuselage diameter
+Out_fuse_x = np.zeros((Len1, Len2)) #? Fuelage smth
+Out_LD_ratio = np.zeros((Len1, Len2))   # ?
+Out_S_Vtail = np.zeros((Len1, Len2))    # V tail surface
+Out_S_htail = np.zeros((Len1, Len2))    # H tail surface
+Out_S_vtail = np.zeros((Len1, Len2))    #? V tail smth
+Out_SM = np.zeros((Len1, Len2)) #? Static margin
+Out_cgx = np.zeros((Len1, Len2))    # CoG
+Out_RTG_h = np.zeros((Len1, Len2))  #! needs change for rocket
+Out_nRTG = np.zeros((Len1, Len2))   #! needs change for rocket
+Out_Bat_h = np.zeros((Len1, Len2))  #* Battery stuff, do we need?
+Out_check = np.zeros((Len1, Len2), dtype=object)    #?
+Out_tail_check = np.zeros((Len1, Len2), dtype=object) #? Tail smth
+Out_lb = np.zeros((Len1, Len2)) # ?
+Out_Planet = np.zeros((Len1, Len2), dtype=object)   # Planet
+Out_Limiting = np.array(np.zeros((Len1, Len2)), dtype=object)   #?
+Out_Area_cov = np.zeros((Len1, Len2))   #* Sensor area cov
+Out_Case = np.zeros((Len1, Len2))   # Case
+Out_Tail_type = np.zeros((Len1, Len2), dtype=object)    # Tail type
+Out_Winglet = np.zeros((Len1, Len2), dtype=object)  # Winglet
+Out_Wing_fold = np.zeros((Len1, Len2), dtype=object)    # Wing folding
+Out_Num_wing_fold = np.zeros((Len1, Len2))  # Number of wing folds
+Out_Season = np.zeros((Len1, Len2), dtype=object)   # Season
+Out_mission_time = np.zeros((Len1, Len2))   # Mission
+Out_swath_width = np.zeros((Len1, Len2))    # Sensor width
+Out_aeroshell = np.zeros((Len1,Len2))   #? Aeroshel smth
 loop = 0
 j = 0
 
