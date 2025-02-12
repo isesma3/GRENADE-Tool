@@ -121,7 +121,7 @@ etap2 = 0.9
 
 #! CHECK IF SOME OF THESE NEED TO BE CHANGED/REMOVED
 # Output Arrays
-#* I am guessing here the meaning of each xd -- Ismael 24/25
+
 Out_S = np.zeros((Len1, Len2))  # Surface
 Out_b = np.zeros((Len1, Len2))  # Wingspan
 Out_P = np.zeros((Len1, Len2))  # 
@@ -130,33 +130,33 @@ Out_v = np.zeros((Len1, Len2))  # Speed (cruise?)
 Out_CD = np.zeros((Len1, Len2)) # CD
 Out_CL = np.zeros((Len1, Len2)) # CL
 Out_AoA = np.zeros((Len1, Len2))    # AoA
-Out_PropN = np.zeros((Len1, Len2))  #? Number of props
-Out_PropD = np.zeros((Len1, Len2))  #? Diameter of props
+Out_PropN = np.zeros((Len1, Len2))  # Number of props
+Out_PropD = np.zeros((Len1, Len2))  # Diameter of props
 Out_PropBlade = np.zeros((Len1, Len2))  # Something of the propeller blade
 Out_Sweep = np.zeros((Len1, Len2))  # Wing sweep
 Out_root_C = np.zeros((Len1, Len2)) # Root cord
 Out_tip_C = np.zeros((Len1, Len2))  # Tip cord
 Out_Wing_TR = np.zeros((Len1, Len2))    # Tapper ratio
 Out_Wing_AR = np.zeros((Len1, Len2))    # Aspect ratio
-Out_Wing_dhl = np.zeros((Len1, Len2))   # ?
+Out_Wing_dhl = np.zeros((Len1, Len2))   # Wing dihedral
 Out_twist = np.zeros((Len1, Len2))  # Wing twist
 Out_fuse_L = np.zeros((Len1, Len2)) # Fuselage length
 Out_fuse_D = np.zeros((Len1,Len2))  # Fuselage diameter
-Out_fuse_x = np.zeros((Len1, Len2)) #? Fuelage smth
-Out_LD_ratio = np.zeros((Len1, Len2))   # ?
+Out_fuse_x_CG = np.zeros((Len1, Len2)) # Fuselage CoG
+Out_LD_ratio = np.zeros((Len1, Len2))   # Efficiency
 Out_S_Vtail = np.zeros((Len1, Len2))    # V tail surface
 Out_S_htail = np.zeros((Len1, Len2))    # H tail surface
-Out_S_vtail = np.zeros((Len1, Len2))    #? V tail smth
-Out_SM = np.zeros((Len1, Len2)) #? Static margin
+Out_S_vtail = np.zeros((Len1, Len2))    # Vertical tail surface
+Out_SM = np.zeros((Len1, Len2)) # Static margin
 Out_cgx = np.zeros((Len1, Len2))    # CoG
 Out_RTG_h = np.zeros((Len1, Len2))  #! needs change for rocket
 Out_nRTG = np.zeros((Len1, Len2))   #! needs change for rocket
 Out_Bat_h = np.zeros((Len1, Len2))  #* Battery stuff, do we need?
-Out_check = np.zeros((Len1, Len2), dtype=object)    #?
-Out_tail_check = np.zeros((Len1, Len2), dtype=object) #? Tail smth
-Out_lb = np.zeros((Len1, Len2)) # ?
+Out_check = np.zeros((Len1, Len2), dtype=object)    # Error check
+Out_tail_check = np.zeros((Len1, Len2), dtype=object) # Tail error check
+Out_lb = np.zeros((Len1, Len2)) # Boom length/Wing span for boom config
 Out_Planet = np.zeros((Len1, Len2), dtype=object)   # Planet
-Out_Limiting = np.array(np.zeros((Len1, Len2)), dtype=object)   #?
+Out_Limiting = np.array(np.zeros((Len1, Len2)), dtype=object)   # Power limitation
 Out_Area_cov = np.zeros((Len1, Len2))   #* Sensor area cov
 Out_Case = np.zeros((Len1, Len2))   # Case
 Out_Tail_type = np.zeros((Len1, Len2), dtype=object)    # Tail type
@@ -166,7 +166,7 @@ Out_Num_wing_fold = np.zeros((Len1, Len2))  # Number of wing folds
 Out_Season = np.zeros((Len1, Len2), dtype=object)   # Season
 Out_mission_time = np.zeros((Len1, Len2))   # Mission
 Out_swath_width = np.zeros((Len1, Len2))    # Sensor width
-Out_aeroshell = np.zeros((Len1,Len2))   #? Aeroshel smth
+Out_aeroshell = np.zeros((Len1,Len2))   # Aeroshel diameter
 loop = 0
 j = 0
 
@@ -460,6 +460,7 @@ for loop in range(CASE_START - 1, loop_end):
         # Calculate the limit load factor due to gusts
         #! This should take care of itself once the wind model is upadted
         rho_sl = ATM_Table(0, atm_table)[0]
+        #TODO 
         U = continuous_gust_model(v, abs(v_wind), CASE.tmission[0],planet,cruise_alt)# Finds gust as a percentage of the total wind speed (z-component of wind vector)
         n_gust = 1 + (1/(2*mtot*g0))*rho_sl*(v*np.sqrt(rho_cruise/rho_sl))*U*S*dp['CLa'][cl_index[0]]
         print('Max gust speed in Titanian {:}: {:.2f} m/s'.format(CASE.Season[0],U))
@@ -512,6 +513,7 @@ for loop in range(CASE_START - 1, loop_end):
 
         # Testing Convergence
         #! This tests every output variable to achieve convergence on all of them
+        #TODO change conversion criteria to fit our propulsion system (e.g. mass)
         print(f"Total Mass [kg]: {mtot}")
         # print(f"Syst. Power: {Ppay}")
         print(f"Preq: {Preq}, Pguess: {P0 * 1000}")
@@ -615,7 +617,7 @@ for loop in range(CASE_START - 1, loop_end):
     Out_twist[j] = 0 # Not calculated
     Out_fuse_L[j] = fuse_dim["Fuse_L"]
     Out_fuse_D[j] = fuse_dim["Fuse_d"]
-    Out_fuse_x[j] = cg_UPD.Other[0]
+    Out_fuse_x_CG[j] = cg_UPD.Other[0]
     Out_S_Vtail[j] = S_Vtail
     Out_S_htail[j] = CASE.Ht_S[0]
     Out_S_vtail[j] = CASE.Vt_S[0]
@@ -666,7 +668,7 @@ for loop in range(CASE_START - 1, loop_end):
             "AoA": Out_AoA[0:, 0],
             "Fuse_L": Out_fuse_L[0:, 0],
             "Fuse_D": Out_fuse_D[0:, 0],
-            "Fuse_x": Out_fuse_x[0:, 0],
+            "Fuse_x": Out_fuse_x_CG[0:, 0],
             "S_VTail": Out_S_Vtail[0:, 0],
             "S_HorTail": Out_S_htail[0:, 0],
             "S_VerTail": Out_S_vtail[0:, 0],
