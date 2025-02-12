@@ -9,7 +9,7 @@ from math import pi as PI
 
 sys.path.insert(0, ROOT_DIR + "/Environment")
 sys.path.insert(0, ROOT_DIR + "/Aero/Airfoils")
-from Environment.TitanAtm import *
+from Environment.MarsAtm import *
 
 # Dashboard code
 st.set_page_config(layout="wide")
@@ -257,7 +257,7 @@ W_inp = Launch_vehicle_mass_constraint
 
 # Create a range of weights based off launch vehicle constraints
 def Weight_Range(W,ncases):
-    g0 = Titan_Const()[0]
+    g0 = Mars_Const()[0]
     W = np.linspace(W*0.25,W,ncases)
     return W
 
@@ -265,7 +265,7 @@ W = Weight_Range(W_inp,ncases)
 
 # Using the launch vehicle weight constraints, calculate a range of wing areas 
 def Wing_S(W,V):
-    rho_cruise = TitanATM_Table(Cruise_Alt, "Recommended")[0]
+    rho_cruise = Atm_Table(Cruise_Alt, "Recommended")[0]
     CL = 0.55 # Lift coefficient assumption
     S = (2*W)/(rho_cruise*(V**2)*CL)
     return S
@@ -288,7 +288,7 @@ AR = Wing_AR(S,b)
 
 # Calculate range of wing sweeps based off cruise velocity
 def Wing_Sweep(V): # Need to model the data better. It estimates too high
-    a = TitanATM_Table(Cruise_Alt, "Recommended")[3]
+    a = MarsAtm_Table(Cruise_Alt, "Recommended")[3]
     M = V/a
     Sweep = 3.7745*(M**3)-30.4220*(M**2)+83.4788*M-20.1291
     Sw_W = np.linspace(Sweep,Sweep,ncases)
@@ -302,7 +302,7 @@ def airfoil(W,AR,V,S): # Need to edit so it can select an airfoil
     e = 0.85
     aoa_0 = -2
     aoa = 2
-    rho_cruise = TitanATM_Table(Cruise_Alt, "Recommended")[0]
+    rho_cruise = MarsAtm_Table(Cruise_Alt, "Recommended")[0]
     CL = (2*W)/(rho_cruise*(V**2)*S)
     Cla = -CL/((CL/(PI*e*AR)) - (aoa - aoa_0))
     return Cla 
