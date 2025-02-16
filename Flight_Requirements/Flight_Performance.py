@@ -18,7 +18,7 @@ ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 import sys
 sys.path.append(ROOT_DIR)
 from Mission import Power2Weight as P2W
-from Environment.TitanAtm import ATM_Table as ATM
+from Environment.MarsAtm import ATM_Table as ATM
 
 
 df = pd.read_csv(os.path.join(LOCAL_DIR,'Flight_Requirements.csv'))
