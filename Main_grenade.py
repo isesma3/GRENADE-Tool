@@ -499,12 +499,26 @@ for loop in range(CASE_START - 1, loop_end):
         Preq, PLimiting = Prequired(
             inp_low, inp_cruise, inp_high, cd, S, mtot, g0, etap1, etap2
         )
+
+        ##BEGIN DEVIN EDITS 02/16
+        #maximum thrust in any mission segment sizes the engine: 
         Treq, Tlimiting = Trequired(inp_low, inp_cruise, inp_high, cd, S, mtot, g0)
+        #integrate over the cruise to determine fuel consumption:
+        #need to add some inputs; SANTA was seemingly not concerned with cruise range
+        #adding commented framework for the mission analysis here:
+        #cruiseIteration = np.linspace(0, cruiseRange, 10)
+        #totalCruiseBurn = 0
+        #for step in cruiseIteration:
+        #    dt = 10e3 / v
+        #    Treq_cruise = cruise_thrust(rho, v, cd, s)
+        #    dWdt = rocketPropulsionPerf(Treq_cruise, Isp, g, M)
+        #    totalCruiseBurn = totalCruiseBurn + dWdt * dt
+
         #m_eng = rocketPropulsionPerf(T_req, Isp, g, M)
 
         # Power
+        ##END DEVIN EDITS 02/16
 
-        
 
         Ppay = Power_Payload()
         Preq += Ppay
