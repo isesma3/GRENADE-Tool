@@ -39,7 +39,7 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Import Libraries
 import os
-from Environment.TitanAtm import *
+from Environment.MarsAtm import *
 LOCAL_DIR = os.path.dirname(__file__)
 ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..'))
 import pandas as pd
