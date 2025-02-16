@@ -31,6 +31,7 @@ sys.path.insert(0, ROOT_DIR + "/VSP_tests")
 
 from Propulsion.Prop_Power_V2 import *
 from Propulsion.PropellerDnP import *
+from Propulsion.thrustRequired import *
 from Weight.TitanWeight import *
 from Weight.Structure import *
 from Environment.MarsAtm import *
@@ -358,6 +359,8 @@ for loop in range(CASE_START - 1, loop_end):
         if b_tail_check == 1:
             tail_check = 'Tail span too big'
 
+        ##WE SHOULD CHANGE THIS TO CALCULATE THE MAXIMUM ML/D, WE CARE ABOUT
+        ##RANGE PRIMARILY
         # Calculate the airspeed required to achieve the maximum L/D
         if CASE.Wing_Sweep[0] == 0:
             e = 1.75*(1 - 0.045*AR**0.68)-0.64
@@ -496,8 +499,13 @@ for loop in range(CASE_START - 1, loop_end):
         Preq, PLimiting = Prequired(
             inp_low, inp_cruise, inp_high, cd, S, mtot, g0, etap1, etap2
         )
+        Treq, Tlimiting = Trequired(inp_low, inp_cruise, inp_high, cd, S, mtot, g0)
+        #m_eng = rocketPropulsionPerf(T_req, Isp, g, M)
 
         # Power
+
+        
+
         Ppay = Power_Payload()
         Preq += Ppay
         if "PPay" in CASE.columns:
@@ -510,6 +518,9 @@ for loop in range(CASE_START - 1, loop_end):
             CASE, m, cg_set, Static_M, npt
         )  # Need updated netural point position and replace value of 1 here
         CGx = cg_UPD.iloc[0]["Net"]
+
+        #Fuel tank sizing / mission analysis
+        #while cruiseRange < 
 
         # Testing Convergence
         #! This tests every output variable to achieve convergence on all of them
