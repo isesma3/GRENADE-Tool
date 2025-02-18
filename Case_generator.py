@@ -37,17 +37,17 @@ def Case_generator(input):
     planetArray = selected_planet(ncases)
 
     # Create drbatt range
-    def drbatt_range(ncases):
-        drbatt = np.zeros(ncases)
-        return drbatt
-    drbatt = drbatt_range(ncases)
+   # def drbatt_range(ncases):
+    #    drbatt = np.zeros(ncases)
+        # return drbatt
+    # drbatt = drbatt_range(ncases)
 
     # Create dtbatt range
-    def dtbatt_range(ncases):
+    # def dtbatt_range(ncases):
         # dtbatt = np.zeros(ncases)
-        dtbatt = np.ones(ncases)*365*24 # 1 year in hour
-        return dtbatt
-    dtbatt = dtbatt_range(ncases)
+        # dtbatt = np.ones(ncases)*365*24 # 1 year in hour
+        # return dtbatt
+    # dtbatt = dtbatt_range(ncases)
 
     # Create EQ_W_Wing range
     def EQ_W_Wing_range(ncases):
@@ -138,48 +138,48 @@ def Case_generator(input):
     PassN = PassN_range(ncases)
 
     # Pfrac range
-    def RTGFuelFrac_range(ncases):
-        Pfrac = np.zeros(ncases)
-        return Pfrac
+    # def RTGFuelFrac_range(ncases):
+    #     Pfrac = np.zeros(ncases)
+    #    return Pfrac
 
-    def Pdistrib(ncases):
-        array = np.ones(ncases)
-        if planet == "Earth":
-            PfracSpanels = array*0.8
-            PfracBattery = array*0.2
-        if planet == "Mars":
-            PfracSpanels = array*0.7
-            PfracBattery = array*0.2
-        if planet == "Titan":
-            PfracSpanels = array*0.0
-            PfracBattery = array*0.0
-        PfracRTG = np.round(1 - PfracSpanels - PfracBattery,2)
-        return PfracSpanels, PfracRTG, PfracBattery
-    PfracSpanels, PfracRTG, PfracBattery = Pdistrib(ncases)
+    # def Pdistrib(ncases):
+    #    array = np.ones(ncases)
+    #    if planet == "Earth":
+    #        PfracSpanels = array*0.8
+    #        PfracBattery = array*0.2
+    #    if planet == "Mars":
+    #        PfracSpanels = array*0.7
+    #        PfracBattery = array*0.2
+    #    if planet == "Titan":
+    #        PfracSpanels = array*0.0
+    #        PfracBattery = array*0.0
+    #    PfracRTG = np.round(1 - PfracSpanels - PfracBattery,2)
+    #    return PfracSpanels, PfracRTG, PfracBattery
+    # PfracSpanels, PfracRTG, PfracBattery = Pdistrib(ncases)
 
     # PropBlade range
-    def PropBlade_range(ncases):
-        PropBlade = np.linspace(3,3,ncases)
-        return PropBlade
-    PropBlade = PropBlade_range(ncases)
+    # def PropBlade_range(ncases):
+    #    PropBlade = np.linspace(3,3,ncases)
+    #    return PropBlade
+    # PropBlade = PropBlade_range(ncases)
 
     # PropD range This is just a for the initial iteration. We can add in to the prop loop to select less or more thrusters based off diameter constraints and whatnot
-    def PropD_range(ncases):
-        PropD = np.linspace(0.37,0.37,ncases)
-        return PropD
-    PropD = PropD_range(ncases)
+    # def PropD_range(ncases):
+    #    PropD = np.linspace(0.37,0.37,ncases)
+    #    return PropD
+    # PropD = PropD_range(ncases)
 
     # PropN range
-    def PropN_range(ncases):
-        PropN = np.linspace(2,2,ncases)
-        return PropN
-    PropN = PropN_range(ncases)
+   # def PropN_range(ncases):
+   #     PropN = np.linspace(2,2,ncases)
+   #     return PropN
+   # PropN = PropN_range(ncases)
 
     #PropulsionN This is just a for the initial iteration. We can add in to the prop loop to select less or more thrusters based off diameter constraints and whatnot
-    def PropulsionN_range(ncases):
-        PropulsionN = np.linspace(4,4,ncases)
-        return PropulsionN
-    PropulsionN = PropulsionN_range(ncases)
+   # def PropulsionN_range(ncases):
+    #    PropulsionN = np.linspace(4,4,ncases)
+     #   return PropulsionN
+    # PropulsionN = PropulsionN_range(ncases)
 
     # rho_b & rho_s ranges
     def rho_range(rho,ncases):
@@ -201,13 +201,13 @@ def Case_generator(input):
     # Misc. DoE variables
     # Making a ones vector
     ones = np.linspace(1,1,ncases)
-    RTGfuelfrac = RTGFuelFrac_range(ncases)
-    RTGfueltype = ones
+    # RTGfuelfrac = RTGFuelFrac_range(ncases)
+    # RTGfueltype = ones
     tmission = ones
     tstart = input.tstart[0]*tmission
     Ult_n = input.Ult_n[0]*ones
     Ult_s = input.Ult_s[0]*ones
-    Vm = input.Vm[0]*ones
+    # Vm = input.Vm[0]*ones
     Cruise_Alt = CruiseAlt*ones
     Min_Alt = MinAlt*ones
     Cruise_V = CruiseV*ones
@@ -327,8 +327,8 @@ def Case_generator(input):
         for j in range(0,ncases):
         # Update the columns with the new data
             df['CASE'] = pd.Series(n_cases)
-            df['drbatt'] = pd.Series(drbatt)
-            df['dtbatt'] = pd.Series(dtbatt)
+           # df['drbatt'] = pd.Series(drbatt)
+           # df['dtbatt'] = pd.Series(dtbatt)
             df['EQ_W_Wing'] = pd.Series(EQ_W_Wing)
             df['EQ_W_Therm'] = pd.Series(EQ_W_Therm)
             df['Foil0'] = pd.Series(Foil0)
@@ -342,19 +342,19 @@ def Case_generator(input):
             df['NACA1'] = pd.Series(NACA1)
             df['Nz'] = pd.Series(Nz)
             df['Panels'] = pd.Series(Panels)
-            df['PassN'] = pd.Series(PassN)
-            df['PfracBattery'] = pd.Series(PfracBattery)
-            df['PfracRTG'] = pd.Series(PfracRTG)
-            df['PfracSpanels'] = pd.Series(PfracSpanels)
+           # df['PassN'] = pd.Series(PassN)
+           # df['PfracBattery'] = pd.Series(PfracBattery)
+           # df['PfracRTG'] = pd.Series(PfracRTG)
+           # df['PfracSpanels'] = pd.Series(PfracSpanels)
             df['Planet'] = pd.Series(planetArray)
-            df['PropBlade'] = pd.Series(PropBlade)
-            df['PropD'] = pd.Series(PropD)
-            df['PropN'] = dfx.iloc[i,1]
+           # df['PropBlade'] = pd.Series(PropBlade)
+           # df['PropD'] = pd.Series(PropD)
+           # df['PropN'] = dfx.iloc[i,1]
             df['PropulsionN'] = dfx.iloc[i,1]
             df['rho_b'] = pd.Series(rho_b)
             df['rho_s'] = pd.Series(rho_s)
-            df['RTGfuelfrac'] = pd.Series(RTGfuelfrac)
-            df['RTGfueltype'] = pd.Series(RTGfueltype)
+           # df['RTGfuelfrac'] = pd.Series(RTGfuelfrac)
+           # df['RTGfueltype'] = pd.Series(RTGfueltype)
             df['tstart'] = pd.Series(tstart)
             df['tmission'] = pd.Series(tmission)
             df['Type'] = pd.Series(Type)
@@ -362,7 +362,7 @@ def Case_generator(input):
             df['Winglet'] = dfx.iloc[i,2]
             df['Ult_n'] = pd.Series(Ult_n)
             df['Ult_s'] = pd.Series(Ult_s)
-            df['Vm'] = pd.Series(Vm)
+           # df['Vm'] = pd.Series(Vm)
             df['Vt_S'] = pd.Series(Sv)
             df['Wing_AR'] = pd.Series(AR)
             df['Wing_dhl'] = pd.Series(dih_wing)
