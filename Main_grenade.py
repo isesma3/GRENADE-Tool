@@ -84,7 +84,7 @@ m2ft = 3.28084  # [m/ft]
 psf2Pa = 0.020885434273039  # [psf/Pa]
 
 #! THIS WE SHOULD CHECK
-custom = 1 # Change this to 1 or 0 if you want to use a custom DoE or not
+custom = 0 # Change this to 1 or 0 if you want to use a custom DoE or not
 if custom == 1:
     DOE = pd.read_csv(os.path.join(ROOT_DIR, "Inp/DOE_Custom_8900_Final.csv"))
 elif custom == 0:
