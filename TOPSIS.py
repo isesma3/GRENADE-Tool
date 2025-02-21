@@ -41,7 +41,7 @@ def TOPSIS(input,df,CASE_END):
     P = df.Power
     LD = df['L/D']
     #mRTG = df.mRTG
-    PropN = df.PropulsionN
+    # PropN = df.PropulsionN
     # Num_fold = df.Num_wing_fold
 
 
@@ -61,14 +61,14 @@ def TOPSIS(input,df,CASE_END):
     P1 = []
     LD1 = []
     #mRTG1 = []
-    PropN1 = []
+    # PropN1 = []
     #Num_fold1 = []
     for i in range(CASE_END):
         b1.append(b[i] / ssq2(b))
         m1.append(m[i] / ssq2(m))
         P1.append(P[i] / ssq2(P))
         LD1.append(LD[i] / ssq2(LD))
-        PropN1.append(PropN[i] / ssq2(PropN))
+       # PropN1.append(PropN[i] / ssq2(PropN))
         #Num_fold1.append(Num_fold[i] / ssq2(Num_fold))
         # if ssq2(mRTG) != 0:
         #     mRTG1.append(mRTG[i] / ssq2(mRTG))
@@ -80,7 +80,7 @@ def TOPSIS(input,df,CASE_END):
     P_weighted = [val * float(input.P_weight[0]) for val in P1]
     LD_weighted = [val * float(input.LD_weight[0]) for val in LD1]
     #mRTG_weighted = [val * float(input.mRTG_weight[0]) for val in mRTG1]
-    PropN_weighted = [val * float(input.PropN_weight[0]) for val in PropN1]
+    # PropN_weighted = [val * float(input.PropN_weight[0]) for val in PropN1]
     #Num_fold_weighted = [val * float(input.Num_fold_weight[0]) for val in Num_fold1]
 
     # Apply the criterion
@@ -102,6 +102,7 @@ def TOPSIS(input,df,CASE_END):
     
                 
     # Seperations
+    # ! need to change to remove propeller variables
     i = 0
     Sip = []
     Sin = []
@@ -156,9 +157,9 @@ def TOPSIS(input,df,CASE_END):
                 "RTG_h": df.RTG_h[Case_num],
                 "n_RTG": df.n_RTG[Case_num],
                 "Batt_h": df.Batt_h[Case_num],
-                "PropulsionN": df.PropulsionN[Case_num],
-                "PropD": df.PropD[Case_num],
-                "PropBlade": df.PropBlade[Case_num],
+               # "PropulsionN": df.PropulsionN[Case_num],
+               # "PropD": df.PropD[Case_num],
+               # "PropBlade": df.PropBlade[Case_num],
                 "Check": df.Check[Case_num],
                 "TailCheck": df.TailCheck[Case_num],
                 "Planet": df.Planet[Case_num],
@@ -201,7 +202,7 @@ def TOPSIS(input,df,CASE_END):
                 "L/D": df.loc[Case_num, 'L/D'],
                 "Fuse_L": df.Fuse_L[Case_num],
                 "Fuse_D": df.Fuse_D[Case_num],
-                "PropulsionN": df.PropulsionN[Case_num],
+               # "PropulsionN": df.PropulsionN[Case_num],
                 "Tail_type": df.Tail_type[Case_num],
                 "Winglet": df.Winglet[Case_num],
                 "t_mission": df.t_mission[Case_num],
