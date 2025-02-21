@@ -224,6 +224,7 @@ def Weight_RTG(Data):
         Casing/structure sized for same themal output as Pu238-based
     '''
     # Extract Data
+    # Needs to be changed for Mars (not using RTG)
     PfracRTG = Data.PfracRTG[0]
     P = Data.P[0]*1000*PfracRTG
     t = Data.tmission[0]        if "tmission"           in Data.columns else 1
@@ -351,6 +352,7 @@ def Weight_Battery(Data):
         - The fraction of power that is not distributed by the battery, directly comes from solar panels
     '''
     # Extract Data
+    # NEED TO CHANGE FOR MARS ROCKET PROPULSION (not using drbatt and dtbatt)
     P = Data.P[0]
     PfracBattery = Data.PfracBattery[0]
     E = Data.dtbatt[0]

@@ -47,6 +47,7 @@
 	struc_F		Shear forces along semispan [lb]
 	struc_M		Bending moments along semispan [lb*ft]
 	
+	tmission    time duration of mission
 	
 	Tmax		Maximum expected ambient Temperature [K]
 	Tmin		Minimum expected ambient Temperature [K]

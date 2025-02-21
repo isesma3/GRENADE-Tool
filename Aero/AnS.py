@@ -206,7 +206,7 @@ def AnS(CASE, mach, rho, mu, v, g0, CGx, Dshell, lb, Tail_type, Winglet, fuse_L,
             cd0 = parasitic_drag_wing(rho, v, mu, wing_root_tc, 0.08, wing_mac, winglet_rudd_mac, wing_le_sweep, wing_root_xtc, mach, l, d, k, wing_area, SwWing, Swwl, Swf)
         
         # Calculate parasitic drag due to propulsors
-        cd0_prop = CASE.PropN[0]*parasitic_drag_nacelle(rho, v, 0.3, mu, k, 15, wing_area)
+        # cd0_prop = CASE.PropN[0]*parasitic_drag_nacelle(rho, v, 0.3, mu, k, 15, wing_area)
 
         # Calculate the parasitic drag due to the winglets
         if Winglet == 'yes':
