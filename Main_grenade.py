@@ -506,12 +506,16 @@ for loop in range(CASE_START - 1, loop_end):
         #integrate over the cruise to determine fuel consumption:
         #need to add some inputs; SANTA was seemingly not concerned with cruise range
         #adding commented framework for the mission analysis here:
-        #cruiseIteration = np.linspace(0, cruiseRange, cruiseRange/100)
+        #cruiseIteration = np.linspace(0, cruiseRange, 100)
         #totalCruiseBurn = 0
+        #m_active = mtot
         #for step in cruiseIteration:
         #    dt = cruiseRange/100 * 1e3 / v
+        #    CL_cruise = m_active * g0 / (0.5 * rho * v**2 * s)
         #    Treq_cruise = cruise_thrust(rho, v, cd, s)
         #    dWdt = rocketPropulsionPerf(Treq_cruise, Isp, g, M)
+        #    decrement weight:
+        #    m_active = m_active - dWdt / g0 * dt
         #    totalCruiseBurn = totalCruiseBurn + dWdt * dt
 
         #m_eng = rocketPropulsionPerf(T_req, Isp, g, M)
