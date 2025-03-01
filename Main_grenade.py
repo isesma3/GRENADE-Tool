@@ -131,9 +131,9 @@ Out_v = np.zeros((Len1, Len2))  # Speed (cruise?)
 Out_CD = np.zeros((Len1, Len2)) # CD
 Out_CL = np.zeros((Len1, Len2)) # CL
 Out_AoA = np.zeros((Len1, Len2))    # AoA
-# Out_PropN = np.zeros((Len1, Len2))  # Number of props
-# Out_PropD = np.zeros((Len1, Len2))  # Diameter of props
-# Out_PropBlade = np.zeros((Len1, Len2))  # Something of the propeller blade
+Out_PropN = np.zeros((Len1, Len2))  # Number of props
+Out_PropD = np.zeros((Len1, Len2))  # Diameter of props
+Out_PropBlade = np.zeros((Len1, Len2))  # Something of the propeller blade
 Out_Sweep = np.zeros((Len1, Len2))  # Wing sweep
 Out_root_C = np.zeros((Len1, Len2)) # Root cord
 Out_tip_C = np.zeros((Len1, Len2))  # Tip cord
@@ -662,9 +662,9 @@ for loop in range(CASE_START - 1, loop_end):
     Out_Planet[j] = planet
     Out_Limiting[j] = PLimiting
     Out_Area_cov[j] =  CASE.Area_coverage[0]
-   # Out_PropN[j] = CASE.PropulsionN[0]
-    # Out_PropD[j] = CASE.PropD[0]
-   # Out_PropBlade[j] = CASE.PropBlade[0]
+    Out_PropN[j] = CASE.PropulsionN[0]
+    Out_PropD[j] = CASE.PropD[0]
+    Out_PropBlade[j] = CASE.PropBlade[0]
     Out_Tail_type[j] = CASE["Tail_type"]
     Out_Winglet[j] = CASE["Winglet"]
     Out_Wing_fold[j] = CASE["Wing_folding"]
@@ -706,9 +706,9 @@ for loop in range(CASE_START - 1, loop_end):
             "RTG_h": Out_RTG_h[0:, 0],
             "n_RTG": Out_nRTG[0:, 0],
             "Batt_h": Out_Bat_h[0:, 0],
-           # "PropulsionN": Out_PropN[0:, 0],
-            #"PropD": Out_PropD[0:, 0],
-            # "PropBlade": Out_PropBlade[0:, 0],
+            "PropulsionN": Out_PropN[0:, 0],
+            "PropD": Out_PropD[0:, 0],
+            "PropBlade": Out_PropBlade[0:, 0],
             "Check": Out_check[0:, 0],
             "TailCheck": Out_tail_check[0:, 0],
             "Planet": Out_Planet[0:, 0],
