@@ -165,7 +165,7 @@ def Wind_Estimate(lat:float,alt:float,yr_frac:float):
     wind = Inter_wind(yr_frac)
     return wind
 
-
+"""
 def Wind_Summer(latitude_summer:float,p:float):
     '''
     Description: Estimates zonal wind on summer solstice based on Neural net fit of TitanWRF simulation data (reference paper in TitanATM.py header)
@@ -366,6 +366,37 @@ def Wind_Spring(latitude_spring:float,p:float):
     # Output
     Predicted_wind_spring = 196.242594755485 + 38.6568211646926*H1_1 + 25.1756503276597*H1_10 + -44.8297475479415*H1_11 + 4.69153859777728*H1_12 + 38.1963614448332*H1_13 + 7.80634847879649*H1_2 + -95.6621459391507*H1_3 + -143.77858066201*H1_4 + 98.5734774103538*H1_5 + 33.4916562170904*H1_6 + 38.3499111996793*H1_7 + 130.125142610056*H1_8 + -73.0658200465044*H1_9
     return Predicted_wind_spring
+"""
+
+
+def Wind_Summer(latitude_summer: float, p: float):
+    '''
+    Returns average summer zonal wind speed [m/s] on Mars.
+    Ignores inputs.
+    '''
+    return 7.06
+
+def Wind_Fall(latitude_fall: float, p: float):
+    '''
+    Returns average fall zonal wind speed [m/s] on Mars.
+    Ignores inputs.
+    '''
+    return 5.72775
+
+def Wind_Winter(latitude_winter: float, p: float):
+    '''
+    Returns average winter zonal wind speed [m/s] on Mars.
+    Ignores inputs.
+    '''
+    return 4.94
+
+def Wind_Spring(latitude_spring: float, p: float):
+    '''
+    Returns average spring zonal wind speed [m/s] on Mars.
+    Ignores inputs.
+    '''
+    return 5.88
+
 
 #! LOOK IF APLICABLE TO MARS
 def continuous_gust_model(V, U, N_yr, Planet, alt):
